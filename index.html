@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>test</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      #layerToggle {
+        bottom: 30px;
+        right: 10px;
+        position: absolute;
+        z-index: 99;
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        opacity: 0.95;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.17/esri/themes/light/main.css"/>
+    <script src="https://js.arcgis.com/4.17/"></script>
+
+    <script>
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/widgets/Search",
+        "esri/widgets/Compass",
+        "esri/widgets/ScaleBar",
+        "esri/layers/WebTileLayer",
+        "esri/layers/KMLLayer",
+        "dojo/on"
+      ], function (Map, MapView, Search, Compass, ScaleBar, WebTileLayer,KMLLayer,on) {
+
+        var gsipaleLyr = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/pale/{level}/{col}/{row}.png",
+            id:"gsipale",
+            opacity:0.9,
+            copyright:"地理院タイル（淡色地図）",
+            visible: false
+        });
+
+        var gsipaleLyr2 = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{level}/{col}/{row}.png",
+            id:"gsipale2",
+            opacity:1.0,
+            copyright:"地理院タイル（陰影起伏図）",
+            visible: false
+        });
+
+        var gsipaleLyr3 = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{level}/{col}/{row}.jpg",
+            id:"gsipale3",
+            opacity:0.9,
+            copyright:"地理院タイル（seamlessphoto）",
+            visible: false
+        });
+
+        var gsipaleLyr4 = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/gazo1/{level}/{col}/{row}.jpg",
+            id:"gsipale4",
+            opacity:0.9,
+            copyright:"地理院タイル（第一期　国土画像情報　（1974～1978年））",
+            visible: false
+        });
+
+        var gsipaleLyr5 = new WebTileLayer({
+            urlTemplate:"https://disaportaldata.gsi.go.jp/raster/01_flood_l2_shinsuishin_data/{level}/{col}/{row}.png",
+            id:"gsipale5",
+            opacity:0.6,
+            copyright:"洪水浸水想定区域（想定最大規模）国土交通省各地方整備局等",
+            visible: false
+        });
+
+        var gsipaleLyr6 = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/ort_old10/{level}/{col}/{row}.png",
+            id:"gsipale6",
+            opacity:0.9,
+            copyright:"地理院タイル（空中写真（1961年～1969年））",
+            visible: false
+        });
+
+        var gsipaleLyr7 = new WebTileLayer({
+            urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/gazo4/{level}/{col}/{row}.jpg",
+            id:"gsipale7",
+            opacity:0.9,
+            copyright:"地理院タイル（国土画像情報（1988年～1990年））",
+            visible: false
+        });
+
+          var area = new KMLLayer({
+          url:"https://yamauchi-inochu.github.io/arcgis_api/kml/area.kml",
+          id:"area"
+        });
+
+          var shelter = new KMLLayer({
+          url:"https://yamauchi-inochu.github.io/arcgis_api/kml/shelter.kml",
+          id:"shelter",
+          copyright:"国土数値情報（避難施設）を加工し作成",
+        });
+
+        var map = new Map({
+          basemap: "topo",
+          layers:[gsipaleLyr2,gsipaleLyr3,gsipaleLyr4,gsipaleLyr6, gsipaleLyr7, gsipaleLyr,gsipaleLyr5,area,shelter]
+        });
+
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [136.570, 36.479],
+          zoom: 11
+        });
+
+        var searchWidget = new Search({
+          view: view
+        });
+
+        view.ui.add(searchWidget, {
+          position: "top-right"
+        });
+
+        const scalebar = new ScaleBar({
+          view: view,
+          unit: "dual"
+        });
+
+        view.ui.add(scalebar, "bottom-left");
+
+        var compass = new Compass({
+                view: view
+                });
+
+        view.ui.add(compass, "top-left");
+
+      view.on("layerview-create", function(event) {
+          if (event.layer.id === "gsipale") {
+             console.log("地理院タイル（淡色地図）の LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "gsipale2") {
+            console.log("地理院タイル（色別標高図）の LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "gsipale3") {
+            console.log("地理院タイル（シームレス写真）の LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "gsipale4") {
+            console.log("地理院タイル（第一期国土画像情報）の LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "area"){
+            console.log("Areaの LayerView が作成されました!", event.layerView);
+          }
+          if (event.layer.id === "shelter"){
+            console.log("shelterの LayerView が作成されました!", event.layerView);
+         }
+          if (event.layer.id === "area"){
+           console.log("areaの LayerView が作成されました!", event.layerView);
+         }
+          if (event.layer.id === "gsipale5"){
+          console.log("gsipale5の LayerView が作成されました!", event.layerView);
+        }
+        if (event.layer.id === "gsipale6") {
+          console.log("地理院タイル（空中写真（1961年～1969年））の LayerView が作成されました!", event.layerView);
+        }
+        if (event.layer.id === "gsipale7") {
+          console.log("地理院タイル（国土画像情報（1988年～1990年））の LayerView が作成されました!", event.layerView);
+        }
+        });
+
+    const gsipaleToggle = document.getElementById("gsipaleLyr");
+    const gsipaleToggle2 = document.getElementById("gsipaleLyr2");
+    const gsipaleToggle3 = document.getElementById("gsipaleLyr3");
+    const gsipaleToggle4 = document.getElementById("gsipaleLyr4");
+    const gsipaleToggle5 = document.getElementById("gsipaleLyr5");
+    const gsipaleToggle6 = document.getElementById("gsipaleLyr6");
+    const gsipaleToggle7 = document.getElementById("gsipaleLyr7");
+    const shelterToggle = document.getElementById("shelter");
+    const areaToggle = document.getElementById("area");
+
+
+      on(gsipaleToggle, "change", function() {
+            gsipaleLyr.visible = gsipaleToggle.checked;
+        });
+      on(gsipaleToggle2, "change", function() {
+            gsipaleLyr2.visible = gsipaleToggle2.checked;
+        });
+      on(gsipaleToggle3, "change", function() {
+            gsipaleLyr3.visible = gsipaleToggle3.checked;
+        });
+      on(gsipaleToggle4, "change", function() {
+            gsipaleLyr4.visible = gsipaleToggle4.checked;
+        });
+      on(gsipaleToggle5, "change", function() {
+            gsipaleLyr5.visible = gsipaleToggle5.checked;
+        });
+      on(gsipaleToggle6, "change", function() {
+            gsipaleLyr6.visible = gsipaleToggle6.checked;
+        });
+      on(gsipaleToggle7, "change", function() {
+            gsipaleLyr7.visible = gsipaleToggle7.checked;
+        });
+      on(shelterToggle, "change", function() {
+        shelter.visible = shelterToggle.checked;
+      });
+      on(areaToggle, "change", function() {
+        area.visible = areaToggle.checked;
+      });
+
+      });
+
+    </script>
+  </head>
+
+  <body>
+    <body>
+      <div id="viewDiv"></div>
+    <span id="layerToggle">
+      <h2>地図データ</h2>
+      <input type="checkbox" id="gsipaleLyr" />地形図<br>
+      <input type="checkbox" id="gsipaleLyr2" />起伏地図<br>
+      <input type="checkbox" id="gsipaleLyr3" /> 最近の空中写真<br>
+      <input type="checkbox" id="gsipaleLyr4" /> 約30年前の空中写真<br>
+      <input type="checkbox" id="gsipaleLyr4" /> 約45年前の空中写真<br>
+      <input type="checkbox" id="gsipaleLyr6" /> 約60年前の空中写真<br>
+      <input type="checkbox" id="shelter" checked /> 一次避難所<br>
+      <input type="checkbox" id="gsipaleLyr5" /> 洪水浸水想定区域（想定最大規模）<br>
+      <img src="./img/shinsui_legend2-1.png" id="img01"><br>
+      <input type="checkbox" id="area" checked/> 対象地域<br><br>
+      <a href="https://github.com/yamauchi-inochu/arcgis_api">この地図について</a>
+    </span>
+  </body>
+</html>
