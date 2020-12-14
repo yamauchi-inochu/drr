@@ -104,12 +104,12 @@
         });
 
         var area = new KMLLayer({
-        url:"https://yamauchi-inochu.github.io/arcgis_api/kml/area.kml",
+        url:"./kml/area.kml",
         id:"area"
       });
 
         var shelter = new KMLLayer({
-        url:"https://yamauchi-inochu.github.io/arcgis_api/kml/shelter.kml",
+        url:"./kml/shelter.kml",
         id:"shelter",
         copyright:"国土数値情報（避難施設）を加工し作成",
       });
@@ -122,7 +122,7 @@
         var view = new MapView({
           container: "viewDiv",
           map: map,
-          center: [136.570, 36.479],
+          center: [139.767, 35.681],
           zoom: 11
         });
 
