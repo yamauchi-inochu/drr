@@ -19,6 +19,7 @@
       #layerToggle {
         bottom: 30px;
         right: 10px;
+        width: 20%;
         position: absolute;
         z-index: 99;
         background-color: white;
@@ -26,6 +27,7 @@
         padding: 10px;
         opacity: 0.95;
       }
+
     </style>
 
     <link
@@ -56,7 +58,7 @@
         var gsipaleLyr2 = new WebTileLayer({
             urlTemplate:"https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{level}/{col}/{row}.png",
             id:"gsipale2",
-            opacity:1.0,
+            opacity:0.9,
             copyright:"地理院タイル（陰影起伏図）",
             visible: false
         });
@@ -101,21 +103,21 @@
             visible: false
         });
 
-          var area = new KMLLayer({
-          url:"https://yamauchi-inochu.github.io/arcgis_api/kml/area.kml",
-          id:"area"
-        });
+        var area = new KMLLayer({
+        url:"https://yamauchi-inochu.github.io/arcgis_api/kml/area.kml",
+        id:"area"
+      });
 
-          var shelter = new KMLLayer({
-          url:"https://yamauchi-inochu.github.io/arcgis_api/kml/shelter.kml",
-          id:"shelter",
-          copyright:"国土数値情報（避難施設）を加工し作成",
-        });
+        var shelter = new KMLLayer({
+        url:"https://yamauchi-inochu.github.io/arcgis_api/kml/shelter.kml",
+        id:"shelter",
+        copyright:"国土数値情報（避難施設）を加工し作成",
+      });
 
-        var map = new Map({
-          basemap: "topo",
-          layers:[gsipaleLyr2,gsipaleLyr3,gsipaleLyr4,gsipaleLyr6, gsipaleLyr7, gsipaleLyr,gsipaleLyr5,area,shelter]
-        });
+      var map = new Map({
+        basemap: "topo",
+        layers:[gsipaleLyr2,gsipaleLyr3,gsipaleLyr4,gsipaleLyr6,gsipaleLyr7, gsipaleLyr,gsipaleLyr5,area,shelter]
+      });
 
         var view = new MapView({
           container: "viewDiv",
@@ -158,15 +160,6 @@
           if (event.layer.id === "gsipale4") {
             console.log("地理院タイル（第一期国土画像情報）の LayerView が作成されました!", event.layerView);
           }
-          if (event.layer.id === "area"){
-            console.log("Areaの LayerView が作成されました!", event.layerView);
-          }
-          if (event.layer.id === "shelter"){
-            console.log("shelterの LayerView が作成されました!", event.layerView);
-         }
-          if (event.layer.id === "area"){
-           console.log("areaの LayerView が作成されました!", event.layerView);
-         }
           if (event.layer.id === "gsipale5"){
           console.log("gsipale5の LayerView が作成されました!", event.layerView);
         }
@@ -176,6 +169,12 @@
         if (event.layer.id === "gsipale7") {
           console.log("地理院タイル（国土画像情報（1988年～1990年））の LayerView が作成されました!", event.layerView);
         }
+        if (event.layer.id === "shelter"){
+          console.log("shelterの LayerView が作成されました!", event.layerView);
+       }
+        if (event.layer.id === "area"){
+         console.log("areaの LayerView が作成されました!", event.layerView);
+       }
         });
 
     const gsipaleToggle = document.getElementById("gsipaleLyr");
@@ -216,8 +215,7 @@
       on(areaToggle, "change", function() {
         area.visible = areaToggle.checked;
       });
-
-      });
+    });
 
     </script>
   </head>
@@ -225,19 +223,19 @@
   <body>
     <body>
       <div id="viewDiv"></div>
-    <span id="layerToggle">
+    <div id="layerToggle">
       <h2>地図データ</h2>
       <input type="checkbox" id="gsipaleLyr" />地形図<br>
       <input type="checkbox" id="gsipaleLyr2" />起伏地図<br>
       <input type="checkbox" id="gsipaleLyr3" /> 最近の空中写真<br>
       <input type="checkbox" id="gsipaleLyr4" /> 約30年前の空中写真<br>
-      <input type="checkbox" id="gsipaleLyr4" /> 約45年前の空中写真<br>
+      <input type="checkbox" id="gsipaleLyr7" /> 約45年前の空中写真<br>
       <input type="checkbox" id="gsipaleLyr6" /> 約60年前の空中写真<br>
       <input type="checkbox" id="shelter" checked /> 一次避難所<br>
       <input type="checkbox" id="gsipaleLyr5" /> 洪水浸水想定区域（想定最大規模）<br>
-      <img src="./img/shinsui_legend2-1.png" id="img01"><br>
+      <img src="./img/shinsui_legend2-1.png" width="80%"  id="img01"><br>
       <input type="checkbox" id="area" checked/> 対象地域<br><br>
-      <a href="https://github.com/yamauchi-inochu/arcgis_api">この地図について</a>
-    </span>
+      <a href="x">この地図について</a>
+    </div>
   </body>
 </html>
